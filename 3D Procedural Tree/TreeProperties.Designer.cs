@@ -382,10 +382,10 @@
             this.a_x.Size = new System.Drawing.Size(52, 20);
             this.a_x.TabIndex = 2;
             this.a_x.Value = new decimal(new int[] {
-            5,
+            3,
             0,
             0,
-            0});
+            65536});
             // 
             // label1
             // 

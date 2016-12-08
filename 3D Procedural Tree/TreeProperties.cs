@@ -12,133 +12,112 @@ using System.IO;
 namespace _3D_Procedural_Tree {
 
     public partial class TreeProperties :Form {
-        float l, k1, k2, k3, m2, m3, ax, az, bx, bz, cx, cz, l2, l3;
-        int n;
-        List<Point> vx = new List<Point>();
-        private void button1_MouseClick(object sender,MouseEventArgs e) {
-            takeValues();
-            drawBranch(0,0,0,l,ax,az,n,ax,az,bx,bz,cx,cz);
-
-        }
         public TreeProperties() {
             InitializeComponent();
         }
+        float l, k1, k2, k3, m2, m3, ax, az, bx, bz, cx, cz, l2, l3;
 
-        public int i = 1;
-        StreamWriter sw = new StreamWriter("c:\\Users\\Elgun\\Desktop\\test89.obj");
-        private void drawBranch(float x,float y,float z,float l,float anglex,float anglez,int depth,
-                 float ax,float az,float bx,float bz,float cx,float cz) {
-
-
-
-
-            // base case and drawing leafs
-            if(depth==0) return;
-
-            // every time angle between main branch and y line increases by a
-            anglez+=az;
-            anglex-=ax;
-            //finding length of branches
-            float l1 = l*k1;
-            float l2 = l*k2;
-            float l3 = l*k3;
-            //coordinate of main branch is end coordinate of previous branch
-            //finding end coordinates of main branch
-            float x1 = x+l*(float)Math.Cos(anglex)*(float)Math.Sin(anglez);
-            float y1 = y+l*(float)Math.Sin(anglex)*(float)Math.Sin(anglez);
-            float z1 = z+l*(float)Math.Cos(anglez);
-
-
-            // finding start coordinates of second branch
-            float x2s = x+l*m2*(float)Math.Cos(anglex)*(float)Math.Sin(anglez);
-            float y2s = y+l*m2*(float)Math.Sin(anglex)*(float)Math.Sin(anglez);
-            float z2s = z+l*m2*(float)Math.Cos(anglez);
-            // finding end coordinates of second branch
-            float x2e = x2s+l2*(float)Math.Cos(anglex+bx)*(float)Math.Sin(anglez+bz);
-            float y2e = y2s+l2*(float)Math.Sin(anglex+bx)*(float)Math.Sin(anglez+bz);
-            float z2e = z2s+l2*(float)Math.Cos(anglez+bz);
-            // draw 2nd branch
-            // finding start coordinates of third branch
-            float x3s = x+l*m3*(float)Math.Cos(anglex)*(float)Math.Sin(anglez);
-            float y3s = y+l*m3*(float)Math.Sin(anglex)*(float)Math.Sin(anglez);
-            float z3s = z+l*m3*(float)Math.Cos(anglez);
-            // finding end coordinates of second branch
-            float x3e = x3s+l3*(float)Math.Cos(anglex-cx)*(float)Math.Sin(anglez-cz);
-            float y3e = y3s+l3*(float)Math.Sin(anglex-cx)*(float)Math.Sin(anglez-cz);
-            float z3e = z3s+l3*(float)Math.Cos(anglez-cz);
-            // draw 3rd branch
-
-
-            String starta = "v "+x+" "+y+" "+z;
-            String enda = "v "+x1+" "+y1+" "+z1;
-            String startb = "v "+x2s+" "+y2s+" "+z2s;
-            String endb = "v "+x2e+" "+y2e+" "+z2e;
-            String startc = "v "+x3s+" "+y3s+" "+z3s;
-            String endc = "v "+x3e+" "+y3e+" "+z3e;
-            String f1 = "f "+i+" "+(i+1)+" "+i;
-            String f2 = "f "+(i+2)+" "+(i+3)+" "+(i+2);
-            String f3 = "f "+(i+4)+" "+(i+5)+" "+(i+4);
-            Write(starta);
-            Write(enda);
-            Write(f1);
-            Write(startb);
-            Write(endb);
-            Write(f2);
-            Write(startc);
-            Write(endc);
-            Write(f3);
-            i=i+6;
-          
-            depth--;
-         
-            drawBranch(x1,y1,z1,l1,anglex,anglez,depth,ax,az,bx,bz,cx,cz);
-            drawBranch(x2e,y2e,z2e,l2,anglex+bx,anglez+bz,depth,ax,az,bx,bz,cx,cz);
-            drawBranch(x3e,y3e,z3e,l3,anglex-cx,anglez-cz,depth,ax,az,bx,bz,cx,cz);
-
+        private void button1_MouseClick(object sender,EventArgs e) {
+            takeValues();
+            draw(n,l,0,0,0,ax,az,bx,bz,cx,cz);
         }
-        public void Write(String s) {
-            try {
 
-                //Pass the filepath and filename to the StreamWriter Constructor
+        int n;
+        StreamWriter sm = new StreamWriter("C:\\Users\\Elgun\\Desktop\\am.obj");
+        public void draw(int n,float l,float x,float y,float z,float ax,float az,float bx,float bz,float cx,float cz) {
+
+            Vector i = new Vector(x,y,z);
+            Matrix rX = Matrix.GetRotationMatrixFor_X_Axis(az);
+            Matrix rZ = Matrix.GetRotationMatrixFor_Z_Axis(ax);
+            Matrix tr = rX.MultiplyByMatrix(rZ);
+            Vector p1 = tr.MultiplyByVector(new Vector(0,0,1));
+            Vector p2 = p1.scale(l*m2);
+            Vector p3 = p1.scale(l*m3);
+            p1=p1.scale(l);
+            Vector p1End = tr.MultiplyByVector(p1);
+            p1End=p1End.add(p1);
 
 
-                //Write a line of text
-                sw.WriteLine(s);
+            Matrix rfX = Matrix.GetRotationMatrixFor_X_Axis(bz);
+            Matrix rfZ = Matrix.GetRotationMatrixFor_Z_Axis(bx);
+            Matrix fTr = rfX.MultiplyByMatrix(rfZ);
+            Vector p2End = fTr.MultiplyByVector(new Vector(0,0,1));
+            p2End=p2End.scale(l*k2);
+            p2End=p2End.add(p2);
 
+            Matrix rgX = Matrix.GetRotationMatrixFor_X_Axis(cz);
+            Matrix rgZ = Matrix.GetRotationMatrixFor_Z_Axis(cx);
+            Matrix gTr = rgX.MultiplyByMatrix(rgZ);
+            Vector p3End = fTr.MultiplyByVector(new Vector(0,0,1));
+            // p3=p3.scale(l*m3);
+            p3End=p3End.scale(l*k2);
+            p3End=p3End.add(p3);
+            int j = 1;
+            sm.WriteLine("v "+x+" "+y+" "+z);
+            sm.WriteLine("v "+p1.x+" "+p1.y+" "+p1.z);
+            sm.WriteLine("f "+j+" "+(j+1)+" "+j);
+            sm.WriteLine("v "+p1.x+" "+p1.y+" "+p1.z);
+            sm.WriteLine("v "+p1End.x+" "+p1End.y+" "+p1End.z);
+            sm.WriteLine("f "+(j+2)+" "+(j+3)+" "+(j+2));
+            sm.WriteLine("v "+p2.x+" "+p2.y+" "+p2.z);
+            sm.WriteLine("v "+p2End.x+" "+p2End.y+" "+p2End.z);
+            sm.WriteLine("f "+(j+4)+" "+(j+5)+" "+(j+4));
+            sm.WriteLine("v "+p3.x+" "+p3.y+" "+p3.z);
+            sm.WriteLine("v "+p3End.x+" "+p3End.y+" "+p3End.z);
+            sm.WriteLine("f "+(j+6)+" "+(j+7)+" "+(j+6));
+            j=j+7; if(n==0) {
+                return;
             }
-            catch(Exception e) {
-                Console.WriteLine("Exception: "+e.Message);
-            }
-            
-        }
+            draw(n-1,l*k1,p1End.x,p1End.y,p1End.z,ax,az,bx,bz,cx,cz);
+            if(n==0) sm.Close();
+        
 
-
-        private void TreeProperties_Load(object sender,EventArgs e) {
-
-        }
-        public void takeValues() {
-            this.l=(float)L.Value;
-            this.k1=(float)k_1.Value;
-            this.k2=(float)k_2.Value;
-            this.k3=(float)k_3.Value;
-            this.m2=(float)m_2.Value;
-            this.m3=(float)m_3.Value;
-            this.ax=(float)a_x.Value;
-            this.az=(float)a_z.Value;
-            this.bx=(float)b_x.Value;
-            this.bz=(float)b_z.Value;
-            this.cx=(float)c_x.Value;
-            this.cz=(float)c_z.Value;
-            this.n=(int)level.Value;
-            this.l2=l*k2;
-            this.l3=l*k3;
-
-        }
-        public float sin(float a) {
-            return (float)Math.Sin(a);
-        }
-        public float cos(float a) {
-            return (float)Math.Cos(a);
-        }
     }
+
+
+    //sm.WriteLine("v 0 0 0");
+    //sm.WriteLine("v "+p1.x+" "+p1.y+" "+p1.z);
+    //sm.WriteLine("f 1 2 1");
+    //sm.WriteLine("v "+p1.x+" "+p1.y+" "+p1.z);
+    //sm.WriteLine("v "+p1End.x+" "+p1End.y+" "+p1End.z);
+    //sm.WriteLine("f 3 4 3");
+    //sm.WriteLine("v "+p2.x+" "+p2.y+" "+p2.z);
+    //sm.WriteLine("v "+p2End.x+" "+p2End.y+" "+p2End.z);
+    //sm.WriteLine("f 5 6 5");
+    //sm.WriteLine("v "+p3.x+" "+p3.y+" "+p3.z);
+    //sm.WriteLine("v "+p3End.x+" "+p3End.y+" "+p3End.z);
+    //sm.WriteLine("f 7 8 7");
+    //sm.Close();
+
+
+
+    private void TreeProperties_Load(object sender,EventArgs e) {
+
+    }
+
+    public void takeValues() {
+        this.l=(float)L.Value;
+        this.k1=(float)k_1.Value;
+        this.k2=(float)k_2.Value;
+        this.k3=(float)k_3.Value;
+        this.m2=(float)m_2.Value;
+        this.m3=(float)m_3.Value;
+        this.ax=(float)a_x.Value;
+        this.az=(float)a_z.Value;
+        this.bx=(float)b_x.Value;
+        this.bz=(float)b_z.Value;
+        this.cx=(float)c_x.Value;
+        this.cz=(float)c_z.Value;
+        this.n=(int)level.Value;
+        this.l2=l*k2;
+        this.l3=l*k3;
+
+    }
+    public float sin(float a) {
+        return (float)Math.Sin(a);
+    }
+    public float cos(float a) {
+        return (float)Math.Cos(a);
+    }
+}
 }
