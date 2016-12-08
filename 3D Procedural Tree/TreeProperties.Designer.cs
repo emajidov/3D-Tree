@@ -109,10 +109,10 @@
             this.b_x.Size = new System.Drawing.Size(52, 20);
             this.b_x.TabIndex = 11;
             this.b_x.Value = new decimal(new int[] {
-            2,
+            1,
             0,
             0,
-            65536});
+            0});
             // 
             // c_z
             // 
@@ -210,11 +210,6 @@
             this.a_z.Name = "a_z";
             this.a_z.Size = new System.Drawing.Size(52, 20);
             this.a_z.TabIndex = 5;
-            this.a_z.Value = new decimal(new int[] {
-            3,
-            0,
-            0,
-            65536});
             // 
             // c_x
             // 
@@ -239,10 +234,10 @@
             this.c_x.Size = new System.Drawing.Size(56, 20);
             this.c_x.TabIndex = 9;
             this.c_x.Value = new decimal(new int[] {
-            6,
+            214,
             0,
             0,
-            65536});
+            -2147352576});
             // 
             // m_3
             // 
@@ -285,7 +280,7 @@
             this.k_3.Size = new System.Drawing.Size(52, 20);
             this.k_3.TabIndex = 8;
             this.k_3.Value = new decimal(new int[] {
-            5,
+            7,
             0,
             0,
             65536});
@@ -308,7 +303,7 @@
             this.k_2.Size = new System.Drawing.Size(56, 20);
             this.k_2.TabIndex = 10;
             this.k_2.Value = new decimal(new int[] {
-            5,
+            7,
             0,
             0,
             65536});
@@ -359,7 +354,7 @@
             this.L.Size = new System.Drawing.Size(52, 20);
             this.L.TabIndex = 1;
             this.L.Value = new decimal(new int[] {
-            200,
+            50,
             0,
             0,
             0});
@@ -387,10 +382,10 @@
             this.a_x.Size = new System.Drawing.Size(52, 20);
             this.a_x.TabIndex = 2;
             this.a_x.Value = new decimal(new int[] {
-            3,
+            5,
             0,
             0,
-            65536});
+            0});
             // 
             // label1
             // 
@@ -560,6 +555,11 @@
             this.level.Name = "level";
             this.level.Size = new System.Drawing.Size(55, 20);
             this.level.TabIndex = 30;
+            this.level.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             // 
             // label13
             // 

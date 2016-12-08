@@ -25,37 +25,48 @@ namespace _3D_Procedural_Tree {
         }
 
         public int i = 1;
-        StreamWriter sw = new StreamWriter("c:\\Users\\Elgun\\Desktop\\test9.obj");
+        StreamWriter sw = new StreamWriter("c:\\Users\\Elgun\\Desktop\\test89.obj");
         private void drawBranch(float x,float y,float z,float l,float anglex,float anglez,int depth,
-             float ax,float az,float bx,float bz,float cx,float cz) {
+                 float ax,float az,float bx,float bz,float cx,float cz) {
+
+
+
+
+            // base case and drawing leafs
             if(depth==0) return;
+
+            // every time angle between main branch and y line increases by a
             anglez+=az;
-            anglex+=ax;
+            anglex-=ax;
+            //finding length of branches
             float l1 = l*k1;
             float l2 = l*k2;
             float l3 = l*k3;
-           
+            //coordinate of main branch is end coordinate of previous branch
+            //finding end coordinates of main branch
             float x1 = x+l*(float)Math.Cos(anglex)*(float)Math.Sin(anglez);
             float y1 = y+l*(float)Math.Sin(anglex)*(float)Math.Sin(anglez);
             float z1 = z+l*(float)Math.Cos(anglez);
 
 
-          
+            // finding start coordinates of second branch
             float x2s = x+l*m2*(float)Math.Cos(anglex)*(float)Math.Sin(anglez);
             float y2s = y+l*m2*(float)Math.Sin(anglex)*(float)Math.Sin(anglez);
             float z2s = z+l*m2*(float)Math.Cos(anglez);
-            
+            // finding end coordinates of second branch
             float x2e = x2s+l2*(float)Math.Cos(anglex+bx)*(float)Math.Sin(anglez+bz);
             float y2e = y2s+l2*(float)Math.Sin(anglex+bx)*(float)Math.Sin(anglez+bz);
             float z2e = z2s+l2*(float)Math.Cos(anglez+bz);
-           
+            // draw 2nd branch
+            // finding start coordinates of third branch
             float x3s = x+l*m3*(float)Math.Cos(anglex)*(float)Math.Sin(anglez);
             float y3s = y+l*m3*(float)Math.Sin(anglex)*(float)Math.Sin(anglez);
             float z3s = z+l*m3*(float)Math.Cos(anglez);
-   
+            // finding end coordinates of second branch
             float x3e = x3s+l3*(float)Math.Cos(anglex-cx)*(float)Math.Sin(anglez-cz);
             float y3e = y3s+l3*(float)Math.Sin(anglex-cx)*(float)Math.Sin(anglez-cz);
             float z3e = z3s+l3*(float)Math.Cos(anglez-cz);
+            // draw 3rd branch
 
 
             String starta = "v "+x+" "+y+" "+z;
@@ -77,8 +88,9 @@ namespace _3D_Procedural_Tree {
             Write(endc);
             Write(f3);
             i=i+6;
+          
             depth--;
-            // recursievely calling drawBranch() method from end coordinates of each branch
+         
             drawBranch(x1,y1,z1,l1,anglex,anglez,depth,ax,az,bx,bz,cx,cz);
             drawBranch(x2e,y2e,z2e,l2,anglex+bx,anglez+bz,depth,ax,az,bx,bz,cx,cz);
             drawBranch(x3e,y3e,z3e,l3,anglex-cx,anglez-cz,depth,ax,az,bx,bz,cx,cz);
@@ -97,9 +109,7 @@ namespace _3D_Procedural_Tree {
             catch(Exception e) {
                 Console.WriteLine("Exception: "+e.Message);
             }
-            finally {
-                Console.WriteLine("Executing finally block.");
-            }
+            
         }
 
 
